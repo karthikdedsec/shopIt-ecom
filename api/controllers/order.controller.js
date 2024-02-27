@@ -108,3 +108,19 @@ export const updateOrder = catchAsyncErrors(async (req, res, next) => {
     success: true,
   });
 });
+
+//delet orders - admin  => /api/v1/admin/orders/:id
+export const deleteOrder = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return next(new ErrorHandler("No orders found!", 404));
+  }
+
+  await order.deleteOne();
+
+  res.status(200).json({
+    success: true,
+    message: "Order Deleted",
+  });
+});
