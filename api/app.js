@@ -2,7 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import productRoute from "./routes/product.route.js";
+import orderRoute from "./routes/order.route.js";
 import authRoute from "./routes/auth.route.js";
+
 import { connectDatabase } from "./config/dbConnect.js";
 import errorMiddleware from "./middlewares/error.js";
 
@@ -24,6 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api/v1", productRoute);
 app.use("/api/v1", authRoute);
+app.use("/api/v1", orderRoute);
 
 //using middleware
 
