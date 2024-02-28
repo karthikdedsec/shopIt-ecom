@@ -131,3 +131,35 @@ export const getProductReviews = catchAsyncErrors(async (req, res, next) => {
     reviews: product.reviews,
   });
 });
+
+//Delete product review => /api/v1/admin/reviews
+export const deleteReview = catchAsyncErrors(async (req, res, next) => {
+  let product = await Product.findById(req.query.productId);
+
+  if (!product) {
+    return next(new ErrorHandler("Product Not Found", 404));
+  }
+
+  const reviews = product?.reviews?.filter(
+    (review) => review._id.toString() !== req?.query?.id.toString()
+  );
+
+  const numOfReviews = reviews.length;
+
+  const ratings =
+    numOfReviews === 0
+      ? 0
+      : product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        numOfReviews;
+
+  product = await Product.findByIdAndUpdate(
+    req.query.productId,
+    { reviews, numOfReviews, ratings },
+    { new: true }
+  );
+
+  res.status(200).json({
+    success: true,
+    product,
+  });
+});
