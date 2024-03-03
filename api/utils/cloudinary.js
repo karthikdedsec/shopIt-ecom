@@ -11,7 +11,7 @@ cloudinary.config({
 
 export const upload_file = (file, folder) => {
   return new Promise((resolve, reject) => {
-    cloudinary.v2.uploader.upload(
+    cloudinary.uploader.upload(
       file,
       (result) => {
         resolve({
