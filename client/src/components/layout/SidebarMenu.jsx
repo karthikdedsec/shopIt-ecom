@@ -9,7 +9,7 @@ const SidebarMenu = () => {
       icon: "fas fa-user",
     },
     {
-      name: "Update Proofile",
+      name: "Update Profile",
       url: "/me/update_profile",
       icon: "fas fa-user",
     },
