@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import { useDispatch, useSelector } from "react-redux";
 import { setCartItem, removeCartItem } from "../../redux/features/cartSlice";
 
 const Cart = () => {
   const { cartItems } = useSelector((state) => state.cart);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const decreaseQty = (item, quantity) => {
     const newQty = quantity - 1;
@@ -40,6 +41,10 @@ const Cart = () => {
 
   const removeCartItemHandler = (id) => {
     dispatch(removeCartItem(id));
+  };
+
+  const checkOutHandler = () => {
+    navigate("/shipping");
   };
 
   return (
@@ -139,7 +144,11 @@ const Cart = () => {
                   </span>
                 </p>
                 <hr />
-                <button id="checkout_btn" className="btn btn-primary w-100">
+                <button
+                  onClick={checkOutHandler}
+                  id="checkout_btn"
+                  className="btn btn-primary w-100"
+                >
                   Check out
                 </button>
               </div>
