@@ -23,7 +23,14 @@ connectDatabase();
 
 const app = express();
 
-app.use(express.json({ limit: "10mb" }));
+app.use(
+  express.json({
+    limit: "10mb",
+    verify: (req, res, buf) => {
+      req.rawBody = buf.toString();
+    },
+  })
+);
 app.use(cookieParser());
 app.use("/api/v1", productRoute);
 app.use("/api/v1", authRoute);
