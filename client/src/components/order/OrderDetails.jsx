@@ -7,14 +7,20 @@ import Loader from "../layout/Loader";
 import { useSelector } from "react-redux";
 
 const OrderDetails = () => {
-  const { user } = useSelector((state) => state.auth);
+  // const { user } = useSelector((state) => state.auth);
   const params = useParams();
 
   const { data, isLoading, error } = useOrderDetailsQuery(params.id);
   const order = data?.order || {};
 
-  const { shippingInfo, orderItems, paymentInfo, totalAmount, orderStatus } =
-    order;
+  const {
+    shippingInfo,
+    orderItems,
+    paymentInfo,
+    totalAmount,
+    orderStatus,
+    user,
+  } = order;
 
   const isPaid = paymentInfo?.status === "paid" ? true : false;
 
@@ -35,9 +41,12 @@ const OrderDetails = () => {
         <div className="col-12 col-lg-9 mt-5 order-details">
           <div className="d-flex justify-content-between align-items-center">
             <h3 className="mt-5 mb-4">Your Order Details</h3>
-            <a className="btn btn-success" href="/invoice/order/order-id">
+            <Link
+              className="btn btn-success"
+              to={`/invoice/order/${order?._id}`}
+            >
               <i className="fa fa-print"></i> Invoice
-            </a>
+            </Link>
           </div>
           <table className="table table-striped table-bordered">
             <tbody>

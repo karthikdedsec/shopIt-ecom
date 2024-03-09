@@ -64,6 +64,7 @@ const MyOrders = () => {
     };
 
     data?.order?.forEach((order) => {
+      console.log(order);
       orders.rows.push({
         id: order?._id,
         amount: `${order?.totalAmount}`,
