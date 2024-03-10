@@ -8,6 +8,11 @@ import SalesChart from "../charts/SalesChart";
 const Dashboard = () => {
   const [startDate, setStartDate] = useState(new Date().setDate(1));
   const [endDate, setEndDate] = useState(new Date());
+
+  const submitHandler = () => {
+    console.log(new Date(startDate).toISOString());
+    console.log(endDate.toISOString());
+  };
   return (
     <AdminLayout>
       <div className="d-flex justify-content-start align-items-center">
@@ -34,7 +39,12 @@ const Dashboard = () => {
             className="form-control"
           />
         </div>
-        <button className="btn fetch-btn ms-4 mt-3 px-5">Fetch</button>
+        <button
+          onClick={submitHandler}
+          className="btn fetch-btn ms-4 mt-3 px-5"
+        >
+          Fetch
+        </button>
       </div>
       <div className="row pr-4 my-5">
         <div className="col-xl-6 col-sm-12 mb-3">
