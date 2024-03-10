@@ -1,29 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const SidebarMenu = () => {
-  const menuItems = [
-    {
-      name: "Profile",
-      url: "/me/profile",
-      icon: "fas fa-user",
-    },
-    {
-      name: "Update Profile",
-      url: "/me/update_profile",
-      icon: "fas fa-user",
-    },
-    {
-      name: "Upload Avatar",
-      url: "/me/upload_avatar",
-      icon: "fas fa-user-circle",
-    },
-    {
-      name: "Update Password",
-      url: "/me/update_password",
-      icon: "fas fa-lock",
-    },
-  ];
+const SidebarMenu = ({ menuItems }) => {
   const location = useLocation();
 
   const [activeMenuItem, setActiveMenuItem] = useState(location.pathname);
