@@ -21,58 +21,57 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
-  responsive: true,
-  interaction: {
-    mode: "index",
-    intersect: false,
-  },
-  stacked: false,
-  plugins: {
-    title: {
-      display: true,
-      text: "Sales & Order data",
+export default function SalesChart({ salesData }) {
+  const options = {
+    responsive: true,
+    interaction: {
+      mode: "index",
+      intersect: false,
     },
-  },
-  scales: {
-    y: {
-      type: "linear",
-      display: true,
-      position: "left",
-    },
-    y1: {
-      type: "linear",
-      display: true,
-      position: "right",
-      grid: {
-        drawOnChartArea: false,
+    stacked: false,
+    plugins: {
+      title: {
+        display: true,
+        text: "Sales & Order data",
       },
     },
-  },
-};
-
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Sales",
-      data: [12, 45, 68, 45, 23, 44],
-      borderColor: "#198753",
-      backgroundColor: "rgba(42, 117, 83, 0.5)",
-      yAxisID: "y",
+    scales: {
+      y: {
+        type: "linear",
+        display: true,
+        position: "left",
+      },
+      y1: {
+        type: "linear",
+        display: true,
+        position: "right",
+        grid: {
+          drawOnChartArea: false,
+        },
+      },
     },
-    {
-      label: "Orders",
-      data: [12, 6, 33, 43, 5, 6],
-      borderColor: "rgb(220, 52, 69)",
-      backgroundColor: "rgba(201, 68, 82, 0.5)",
-      yAxisID: "y1",
-    },
-  ],
-};
+  };
 
-export default function SalesChart() {
+  const labels = salesData?.map((data) => data?.date);
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Sales",
+        data: salesData?.map((data) => data?.sales),
+        borderColor: "#198753",
+        backgroundColor: "rgba(42, 117, 83, 0.5)",
+        yAxisID: "y",
+      },
+      {
+        label: "Orders",
+        data: salesData?.map((data) => data?.numOrders),
+        borderColor: "rgb(220, 52, 69)",
+        backgroundColor: "rgba(201, 68, 82, 0.5)",
+        yAxisID: "y1",
+      },
+    ],
+  };
   return <Line options={options} data={data} />;
 }
