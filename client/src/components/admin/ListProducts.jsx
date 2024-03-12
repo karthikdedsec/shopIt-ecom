@@ -4,17 +4,35 @@ import Loader from "../layout/Loader";
 import { MDBDataTable } from "mdbreact";
 import { Link } from "react-router-dom";
 import MetaData from "../layout/MetaData";
-import { useGetAdminProductsQuery } from "../../redux/api/productsApi";
+import {
+  useDeleteProductMutation,
+  useGetAdminProductsQuery,
+} from "../../redux/api/productsApi";
 import AdminLayout from "../layout/AdminLayout";
 
 const ListProducts = () => {
   const { data, isLoading, error } = useGetAdminProductsQuery();
 
+  const [
+    deleteProduct,
+    { isLoading: isDeleteLoading, error: deleteError, isSuccess },
+  ] = useDeleteProductMutation();
+
   useEffect(() => {
     if (error) {
       toast.error(error?.data?.message);
     }
-  }, [error]);
+    if (deleteError) {
+      toast.error(deleteError?.data?.message);
+    }
+    if (isSuccess) {
+      toast.success("Product deleted");
+    }
+  }, [error, deleteError, isSuccess]);
+
+  const deleteProductHandler = (id) => {
+    deleteProduct(id);
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -67,7 +85,11 @@ const ListProducts = () => {
             >
               <i className="fa fa-image"></i>
             </Link>
-            <button className="btn btn-outline-danger ms-2">
+            <button
+              onClick={() => deleteProductHandler(product?._id)}
+              className="btn btn-outline-danger ms-2"
+              disabled={isDeleteLoading}
+            >
               <i className="fa fa-trash"></i>
             </button>
           </>
