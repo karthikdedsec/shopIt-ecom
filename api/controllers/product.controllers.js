@@ -3,6 +3,7 @@ import Product from "../models/product.js";
 import APIFilters from "../utils/apiFilters.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import Order from "../models/order.js";
+import { upload_file } from "../utils/cloudinary.js";
 
 //create new product => /api/v1/products
 export const getProducts = catchAsyncErrors(async (req, res) => {
@@ -68,6 +69,27 @@ export const updateProduct = catchAsyncErrors(async (req, res) => {
       new: true,
     });
   }
+
+  res.status(200).json({
+    product,
+  });
+});
+
+//upload product images => /api/v1/admin/products/:id/upload_images
+export const uploadProductImages = catchAsyncErrors(async (req, res) => {
+  let product = await Product.findById(req?.params?.id);
+
+  if (!product) {
+    return next(new ErrorHandler("Product Not Found", 404));
+  }
+
+  const uploader = async (image) => upload_file(image, "shopit/products");
+
+  const urls = await Promise.all((req?.body?.images).map(uploader));
+
+  product?.images?.push(...urls);
+
+  await product?.save();
 
   res.status(200).json({
     product,
