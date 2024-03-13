@@ -6,6 +6,7 @@ import Header from "./components/layout/Header";
 import { Toaster } from "react-hot-toast";
 import useUserRoutes from "./components/routes/UserRoutes";
 import useAdminRoutes from "./components/routes/AdminRoutes";
+import NotFound from "./components/layout/NotFound";
 
 function App() {
   const userRoutes = useUserRoutes();
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             {userRoutes}
             {adminRoutes}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
 

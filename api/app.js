@@ -8,6 +8,11 @@ import paymentRoute from "./routes/payment.route.js";
 
 import { connectDatabase } from "./config/dbConnect.js";
 import errorMiddleware from "./middlewares/error.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 //Handle Uncaught exceptions
 process.on("uncaughtException", (err) => {
@@ -16,7 +21,9 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-dotenv.config({ path: "api/config/config.env" });
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  dotenv.config({ path: "api/config/config.env" });
+}
 
 //connect to db
 connectDatabase();
@@ -36,6 +43,13 @@ app.use("/api/v1", productRoute);
 app.use("/api/v1", authRoute);
 app.use("/api/v1", orderRoute);
 app.use("/api/v1", paymentRoute);
+
+if (process.env.NODE_ENV === "PRODUCTION") {
+  app.use(express.static(path.join(__dirname, "../client/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../client/dist/index.html"));
+  });
+}
 
 //using middleware
 
